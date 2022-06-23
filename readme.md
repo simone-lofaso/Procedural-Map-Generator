@@ -16,5 +16,5 @@ specifics on filling matrix
 
 pick a random point, pick a random tile
 pick a random direction, choose a tile possible based on the other tile
-keep doing that, this time based on lowest entropy
+keep doing that, this time based on lowest entropy: try moves dependant on other moves first, look for lowest num of possible moves!
 if no possible move, iterate through the matrix until 0 is found, or if no 0 is found, you are done!

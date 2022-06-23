@@ -9,8 +9,11 @@ from PIL import Image
 
 #might want to add a way to "animate" the drawing of the pixel. Would be super slow but it wil look pretty
 def newImage():
-    img = Image.new('RGB', (100, 100))
-    img.putpixel((30,60), (155,155,55))
+    img = Image.new('RGB', (48, 48))
+    img.putpixel((10,10), (155,155,55))
+    img.putpixel((11,10), (155,155,55))
+    img.putpixel((10,11), (155,155,55))
+    img.putpixel((11,11), (155,155,55))
     img.save('sqr.png')
     return img
 
