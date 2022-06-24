@@ -2,7 +2,7 @@ start with basic map
 
 create matrix 16x16 consisting of 0s
 
-create image 96x96
+create image 64x64
 
 0 on the matrix means empty, wcf has not yet reached this index
 
