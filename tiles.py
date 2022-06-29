@@ -1,12 +1,15 @@
 #This class will represent our pre-drawn tiles
 #from PIL import Image
+import random
+
+WATER_CHANCE = .25
 
 
 if __name__ == "__main__":
     print("run drawer.py ya doofus")
     quit
 
-def chooseTile(tile, xIndex, yIndex): #idk if im stupid or not but i cant remember how to only accept ints here
+def chooseTile(tile, xIndexDraw, yIndexDraw, xIndex, yIndex):
     """ Chooses which tile should be drawn at the given location, then calls the right method to draw the specified tile.
      Index will respond to four times the location of the index. E.G. Index 0, 4 points to starting pixel 0, 16.
     
@@ -18,12 +21,20 @@ def chooseTile(tile, xIndex, yIndex): #idk if im stupid or not but i cant rememb
 
 
     """
-    if (tile == 1): #NOT A GOOD WAY OF DOING THIS but python has no switch statements until 3.10, which doesnt work with numpy right now. Maybe think of better way ;)
-        water(xIndex, yIndex)
-    elif (tile == 2):
-        coast(xIndex, yIndex)
-        
+    import drawer 
+    if drawer.map[xIndex][yIndex] == 1:
+        tile = random.randint(0, 3)
 
+
+    if (tile == 1): #NOT A GOOD WAY OF DOING THIS but python has no switch statements until 3.10, which doesnt work with numpy right now. Maybe think of better way ;)
+        water(xIndexDraw, yIndexDraw)
+    elif (tile == 2):
+        coast(xIndexDraw, yIndexDraw)
+        
+def getLowestEntropy(xIndex, yIndex):
+    #maybe we don't need this until we make it complicated. Drawing a map shouldnt need this
+    #will need to check 4 (or 8?) closest tiles. only check if 
+    return 0
 
 
 def water(xIndex , yIndex):
