@@ -1,5 +1,6 @@
 #This class will represent our pre-drawn tiles
 #from PIL import Image
+from asyncio.windows_events import NULL
 import random
 
 #format CURRENTTILE_NEXT_TILE CHANCE
@@ -12,7 +13,7 @@ COAST_LAND_CHACE = .75 #incease to increase thickness of coast (i think)
 
 
 if __name__ == "__main__":
-    print("run drawer.py ya doofus")
+    print("run wavefunctionalgo.py ya doofus")
     quit
 
 def chooseTile(xIndexDraw, yIndexDraw, xIndex, yIndex): #need more clear param names
@@ -25,19 +26,21 @@ def chooseTile(xIndexDraw, yIndexDraw, xIndex, yIndex): #need more clear param n
         yIndex: the Y Index of the current tile
         xIndexDraw: the X index of the new tile to be drawn
         yIndexDraw: the Y index of the new tile to be drawn
-
-
     """
-    import drawer #want to figure out how to import this at the top 
-    currentTile = drawer.map[xIndex][yIndex]
-    """
+    import wavefunctionalgo #want to figure out how to import this at the top 
+    currentTile = wavefunctionalgo.map[xIndex][yIndex]
+    
+    tile = NULL #just so it compiles
     if currentTile == 1: #we can change this to pythons equivalent of a switch statement if we update numpy and python to 3.10, but idk if im lazy enough
         #use random generator 
         #chance for tiles next to water
+        print(1)
     elif currentTile == 2:
         #chance for tiles next to coast
+        print(2)
     elif currentTile == 3:
         #chance for tiles next to land
+        print(3)
     
 
     if (tile == 1): #NOT A GOOD WAY OF DOING THIS but python has no switch statements until 3.10, which doesnt work with numpy right now. Maybe think of better way ;)
@@ -46,7 +49,9 @@ def chooseTile(xIndexDraw, yIndexDraw, xIndex, yIndex): #need more clear param n
         coast(xIndexDraw, yIndexDraw)
     elif (tile == 3):
         land(xIndexDraw, yIndexDraw)
-    """
+    
+        #no value for tile. should only happen once
+
 def getLowestEntropy(xIndex, yIndex):
     #maybe we don't need this until we make it complicated. Drawing a map shouldnt need this
     #will need to check 4 (or 8?) closest tiles. only check if 
@@ -60,61 +65,61 @@ def water(xIndex , yIndex):
         xIndex: the x Index of the matrix
         yIndex: the y Index of the matrix
     """
-    import drawer #avoids circular import. is this the best way to do it? Fuck you.
-    drawer.img.putpixel((xIndex * 4, yIndex * 4), (28,163,236)) #better way to do this?
-    drawer.img.putpixel((xIndex * 4 + 1, yIndex * 4), (28,163,236))
-    drawer.img.putpixel((xIndex * 4 + 2, yIndex * 4), (28,163,236))
-    drawer.img.putpixel((xIndex * 4 + 3, yIndex * 4), (28,163,236))
-    drawer.img.putpixel((xIndex * 4, yIndex * 4 + 1), (28,163,236))
-    drawer.img.putpixel((xIndex * 4, yIndex * 4 + 2), (28,163,236))
-    drawer.img.putpixel((xIndex * 4, yIndex * 4 + 3), (28,163,236))
-    drawer.img.putpixel((xIndex * 4 + 1, yIndex * 4 + 1), (28,163,236))
-    drawer.img.putpixel((xIndex * 4 + 2, yIndex * 4 + 2), (28,163,236))
-    drawer.img.putpixel((xIndex * 4 + 3, yIndex * 4 + 3), (28,163,236))
-    drawer.img.putpixel((xIndex * 4 + 1, yIndex * 4 + 2), (28,163,236))
-    drawer.img.putpixel((xIndex * 4 + 2, yIndex * 4 + 1), (28,163,236))
-    drawer.img.putpixel((xIndex * 4 + 3, yIndex * 4 + 2), (28,163,236))
-    drawer.img.putpixel((xIndex * 4 + 2, yIndex * 4 + 3), (28,163,236))
-    drawer.img.putpixel((xIndex * 4 + 3, yIndex * 4 + 1), (28,163,236))
-    drawer.img.putpixel((xIndex * 4 + 1, yIndex * 4 + 3), (28,163,236))
-    drawer.img.save("output.png")
+    import wavefunctionalgo #avoids circular import. is this the best way to do it? Fuck you.
+    wavefunctionalgo.img.putpixel((xIndex * 4, yIndex * 4), (28,163,236)) #better way to do this?
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 1, yIndex * 4), (28,163,236))
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 2, yIndex * 4), (28,163,236))
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 3, yIndex * 4), (28,163,236))
+    wavefunctionalgo.img.putpixel((xIndex * 4, yIndex * 4 + 1), (28,163,236))
+    wavefunctionalgo.img.putpixel((xIndex * 4, yIndex * 4 + 2), (28,163,236))
+    wavefunctionalgo.img.putpixel((xIndex * 4, yIndex * 4 + 3), (28,163,236))
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 1, yIndex * 4 + 1), (28,163,236))
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 2, yIndex * 4 + 2), (28,163,236))
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 3, yIndex * 4 + 3), (28,163,236))
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 1, yIndex * 4 + 2), (28,163,236))
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 2, yIndex * 4 + 1), (28,163,236))
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 3, yIndex * 4 + 2), (28,163,236))
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 2, yIndex * 4 + 3), (28,163,236))
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 3, yIndex * 4 + 1), (28,163,236))
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 1, yIndex * 4 + 3), (28,163,236))
+    wavefunctionalgo.img.save("output.png")
 
 def coast(xIndex, yIndex):
-    import drawer
-    drawer.img.putpixel((xIndex * 4, yIndex * 4), (242,209, 107)) #better way to do this?
-    drawer.img.putpixel((xIndex * 4 + 1, yIndex * 4), (242,209, 107))
-    drawer.img.putpixel((xIndex * 4 + 2, yIndex * 4), (242,209, 107))
-    drawer.img.putpixel((xIndex * 4 + 3, yIndex * 4), (242,209, 107))
-    drawer.img.putpixel((xIndex * 4, yIndex * 4 + 1), (242,209, 107))
-    drawer.img.putpixel((xIndex * 4, yIndex * 4 + 2), (242,209, 107))
-    drawer.img.putpixel((xIndex * 4, yIndex * 4 + 3), (242,209, 107))
-    drawer.img.putpixel((xIndex * 4 + 1, yIndex * 4 + 1), (242,209, 107))
-    drawer.img.putpixel((xIndex * 4 + 2, yIndex * 4 + 2), (242,209, 107))
-    drawer.img.putpixel((xIndex * 4 + 3, yIndex * 4 + 3), (242,209, 107))
-    drawer.img.putpixel((xIndex * 4 + 1, yIndex * 4 + 2), (242,209, 107))
-    drawer.img.putpixel((xIndex * 4 + 2, yIndex * 4 + 1), (242,209, 107))
-    drawer.img.putpixel((xIndex * 4 + 3, yIndex * 4 + 2), (242,209, 107))
-    drawer.img.putpixel((xIndex * 4 + 2, yIndex * 4 + 3), (242,209, 107))
-    drawer.img.putpixel((xIndex * 4 + 3, yIndex * 4 + 1), (242,209, 107))
-    drawer.img.putpixel((xIndex * 4 + 1, yIndex * 4 + 3), (242,209, 107))
-    drawer.img.save("output.png")
+    import wavefunctionalgo
+    wavefunctionalgo.img.putpixel((xIndex * 4, yIndex * 4), (242,209, 107)) #better way to do this?
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 1, yIndex * 4), (242,209, 107))
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 2, yIndex * 4), (242,209, 107))
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 3, yIndex * 4), (242,209, 107))
+    wavefunctionalgo.img.putpixel((xIndex * 4, yIndex * 4 + 1), (242,209, 107))
+    wavefunctionalgo.img.putpixel((xIndex * 4, yIndex * 4 + 2), (242,209, 107))
+    wavefunctionalgo.img.putpixel((xIndex * 4, yIndex * 4 + 3), (242,209, 107))
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 1, yIndex * 4 + 1), (242,209, 107))
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 2, yIndex * 4 + 2), (242,209, 107))
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 3, yIndex * 4 + 3), (242,209, 107))
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 1, yIndex * 4 + 2), (242,209, 107))
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 2, yIndex * 4 + 1), (242,209, 107))
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 3, yIndex * 4 + 2), (242,209, 107))
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 2, yIndex * 4 + 3), (242,209, 107))
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 3, yIndex * 4 + 1), (242,209, 107))
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 1, yIndex * 4 + 3), (242,209, 107))
+    wavefunctionalgo.img.save("output.png")
 
 def land(xIndex, yIndex):
-    import drawer
-    drawer.img.putpixel((xIndex * 4, yIndex * 4), (0,154,23)) #better way to do this?
-    drawer.img.putpixel((xIndex * 4 + 1, yIndex * 4), (0,154,23))
-    drawer.img.putpixel((xIndex * 4 + 2, yIndex * 4), (0,154,23))
-    drawer.img.putpixel((xIndex * 4 + 3, yIndex * 4), (0,154,23))
-    drawer.img.putpixel((xIndex * 4, yIndex * 4 + 1), (0,154,23))
-    drawer.img.putpixel((xIndex * 4, yIndex * 4 + 2), (0,154,23))
-    drawer.img.putpixel((xIndex * 4, yIndex * 4 + 3), (0,154,23))
-    drawer.img.putpixel((xIndex * 4 + 1, yIndex * 4 + 1), (0,154,23))
-    drawer.img.putpixel((xIndex * 4 + 2, yIndex * 4 + 2), (0,154,23))
-    drawer.img.putpixel((xIndex * 4 + 3, yIndex * 4 + 3), (0,154,23))
-    drawer.img.putpixel((xIndex * 4 + 1, yIndex * 4 + 2), (0,154,23))
-    drawer.img.putpixel((xIndex * 4 + 2, yIndex * 4 + 1), (0,154,23))
-    drawer.img.putpixel((xIndex * 4 + 3, yIndex * 4 + 2), (0,154,23))
-    drawer.img.putpixel((xIndex * 4 + 2, yIndex * 4 + 3), (0,154,23))
-    drawer.img.putpixel((xIndex * 4 + 3, yIndex * 4 + 1), (0,154,23))
-    drawer.img.putpixel((xIndex * 4 + 1, yIndex * 4 + 3), (0,154,23))
-    drawer.img.save("output.png")
+    import wavefunctionalgo
+    wavefunctionalgo.img.putpixel((xIndex * 4, yIndex * 4), (0,154,23)) #better way to do this?
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 1, yIndex * 4), (0,154,23))
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 2, yIndex * 4), (0,154,23))
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 3, yIndex * 4), (0,154,23))
+    wavefunctionalgo.img.putpixel((xIndex * 4, yIndex * 4 + 1), (0,154,23))
+    wavefunctionalgo.img.putpixel((xIndex * 4, yIndex * 4 + 2), (0,154,23))
+    wavefunctionalgo.img.putpixel((xIndex * 4, yIndex * 4 + 3), (0,154,23))
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 1, yIndex * 4 + 1), (0,154,23))
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 2, yIndex * 4 + 2), (0,154,23))
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 3, yIndex * 4 + 3), (0,154,23))
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 1, yIndex * 4 + 2), (0,154,23))
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 2, yIndex * 4 + 1), (0,154,23))
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 3, yIndex * 4 + 2), (0,154,23))
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 2, yIndex * 4 + 3), (0,154,23))
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 3, yIndex * 4 + 1), (0,154,23))
+    wavefunctionalgo.img.putpixel((xIndex * 4 + 1, yIndex * 4 + 3), (0,154,23))
+    wavefunctionalgo.img.save("output.png")
