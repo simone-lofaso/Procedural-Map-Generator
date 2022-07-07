@@ -27,10 +27,12 @@ mapBool = numpy.array([[[True,True,True], [True,True,True],[True,True,True],[Tru
                        [[True,True,True], [True,True,True],[True,True,True],[True,True,True],[True,True,True], [True,True,True], [True,True,True], [True,True,True], [True,True,True], [True,True,True], [True,True,True], [True,True,True], [True,True,True], [True,True,True], [True,True,True], [True,True,True]]
                        ])
 
-for i in range(16):
-    for j in range(16):
-        if i < 16:
-            tiles.chooseTile(i, j, i + 1, j)
+#NOTES FOR MAIN 
+
+#First, pick random cell
+#Then, pick random tile
+#pick random tile next to tile, then pick tile there, propogate new constraints to neighboring cells
+#find lowest entropy in matrix, basically we want to use mapbool and find the least amount of trues
         
                        
 img = Image.new('RGB', (64, 64 ))

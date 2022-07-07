@@ -73,7 +73,7 @@ def getLowestEntropy(xIndex, yIndex):
     #will need to check 4 (or 8?) closest tiles. only check if 
     return 0
     
-
+#THESE NEED TO CHANGE BOOLEAN 3D ARRAY TO ALLOW IF TILES CAN BE CHOSEN!
 def water(xIndex , yIndex):
     """Draws and saves water tile to image
     
