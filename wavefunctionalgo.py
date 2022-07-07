@@ -29,7 +29,9 @@ mapBool = numpy.array([[[True,True,True], [True,True,True],[True,True,True],[Tru
 
 for i in range(16):
     for j in range(16):
-        print("aaaa")
+        if i < 16:
+            tiles.chooseTile(i, j, i + 1, j)
+        
                        
 img = Image.new('RGB', (64, 64 ))
 img.save('output.png')
