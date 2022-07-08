@@ -1,18 +1,17 @@
 #This class will represent our pre-drawn tiles
 #from PIL import Image
 from asyncio.windows_events import NULL
+from cmath import log
+import math
 import random
+from turtle import pos
 
 #format CURRENTTILE_NEXT_TILE CHANCE
 #ex: water_ coast_chance is the chance if the current tile is water for the next tile to be coast
 #these are all placeholder values, feel free to change
-WATER_WATER_CHANCE = .75
-WATER_COAST_CHANCE = .25
-COAST_LAND_CHANCE = .75
-COAST_COAST_CHANCE = .1 #incease to increase thickness of coast (i think)
-COAST_WATER_CHANCE = .15
-LAND_COAST_CHANCE = .25
-LAND_LAND_CHANCE = .75
+WATER_CHANCE = .4
+COAST_CHANCE = .2
+LAND_CHANCE = .4
 #these are not done yet. will need each relation for possible tiles touchin
 #also the values are placeholder, feel free to change if you want to
 
@@ -27,53 +26,75 @@ if __name__ == "__main__":
 
 
 #NEED TO IMPLEMENT CHECKING WITH BOOLEAN 3D ARRAY!!!!!!!!! DO NOT FORGET!!!
-def chooseTile(xIndexDraw, yIndexDraw, xIndex, yIndex): #need more clear param names
-    """ Chooses which tile should be drawn at the given location, then calls the right method to draw the specified tile.
-     Index will respond to four times the location of the index. E.G. Index 0, 4 points to starting pixel 0, 16.
+def chooseTile(xIndex, yIndex): #need more clear param names
+    """ FINISH DESCRIPTION
     
 
     Parameters:
         xIndex: the x Index of the current tile
         yIndex: the Y Index of the current tile
-        xIndexDraw: the X index of the new tile to be drawn
-        yIndexDraw: the Y index of the new tile to be drawn
     """
     import wavefunctionalgo #want to figure out how to import this at the top 
-    currentTile = wavefunctionalgo.map[xIndex][yIndex]
-    tiles = [1,2,3]
+    possibleTiles = wavefunctionalgo.mapBool[xIndex][yIndex]
+    if possibleTiles == [True, True, True]:
+        tiles = [1,2,3]
+        choice = random.choices(tiles, weights = (WATER_CHANCE, COAST_CHANCE, LAND_CHANCE))
+        if choice == 1: #not a switch statement because this was developed on python 3.9 (they came in 3.10)
+            water(xIndex, yIndex)
+        elif choice == 2:
+            coast(xIndex, yIndex)
+        elif choice ==  3:
+            land(xIndex, yIndex)
+    elif possibleTiles == [True, True, False]:
+        tiles = [1,2]
+        choice = random.choices(tiles, weights = (WATER_CHANCE, COAST_CHANCE))
+        if choice == 1:
+            water(xIndex, yIndex)
+        elif choice == 2:
+            coast(xIndex, yIndex)
+    elif possibleTiles == [False, True, False]:
+        coast(xIndex, yIndex)
+    elif possibleTiles == [False, True, True]:
+        tiles = [2,3]
+        choice = random.choices(tiles, weights = (COAST_CHANCE, LAND_CHANCE))
+        if choice == 2:
+            coast(xIndex, yIndex)
+        elif choice == 3:
+            land(xIndex, yIndex)
     
-    if currentTile == 1: #we can change this to pythons equivalent of a switch statement if we update numpy and python to 3.10, but idk if im lazy enough
-                         #chance for tiles next to water
-        choice = random.choices(tiles, weights = (WATER_WATER_CHANCE, WATER_COAST_CHANCE, 0))
-        if (choice == 1):
-            water(xIndexDraw, yIndexDraw)
-        elif (choice == 2): #might switch to else?
-            coast(xIndexDraw, yIndexDraw)
-    elif currentTile == 2: #tiles next to coast
-        choice = random.choices(tiles, weights = (COAST_WATER_CHANCE, COAST_COAST_CHANCE, COAST_LAND_CHANCE,))
-        if (choice == 1):
-            water(xIndexDraw, yIndexDraw)
-        elif (choice == 2):
-            coast(xIndexDraw, yIndexDraw)
-        elif (choice == 3):
-            land(xIndexDraw, yIndexDraw)
-    elif currentTile == 3: #chance for tiles next to land
-        choice = random.choices(tiles, weight = (0, LAND_COAST_CHANCE, LAND_LAND_CHANCE))
-        if (choice == 2):
-            coast(xIndexDraw, yIndexDraw)
-        elif (choice == 3):
-            land(xIndexDraw, yIndexDraw)
-    
+#iterate through map matrix
+#if not 0, get neighboring cell tiles and find entropy using their weightage
+#if surrounding bits dont have tiles, use mapBool to determine entropy
+#return list of equal entropy (unlikely to be one but), then choose a random one
+def getLowestEntropy():
+    import wavefunctionalgo
+    import random
+    lowestEntropy = 999
+    currentEntropy = 0
+    lowestEntropyTiles = []
+    for i in range(16):
+        for j in range(16):
+            if wavefunctionalgo.map[i][j] != 0: #checking to see if neigboring tile is water. if yes it will be more likely to choose it
+                possibleTiles = wavefunctionalgo.mapBool[i][j]
+                if possibleTiles == [True, True, True]: 
+                    currentEntropy = - (WATER_CHANCE * math.log(WATER_CHANCE) + COAST_CHANCE * math.log(COAST_CHANCE) + LAND_CHANCE * math.log(LAND_CHANCE))
+                elif possibleTiles == [True, True, False]:
+                    currentEntropy = - (WATER_CHANCE * math.log(WATER_CHANCE) + COAST_CHANCE * math.log(COAST_CHANCE))
+                elif possibleTiles == [False, True, True]:
+                    currentEntropy = - (COAST_CHANCE * math.log(COAST_CHANCE) + LAND_CHANCE * math.log(LAND_CHANCE))
+                elif possibleTiles == [False, True, False]:
+                    currentEntropy = - (COAST_CHANCE * math.log(COAST_CHANCE))
+                if currentEntropy < lowestEntropy:
+                    lowestEntropy = currentEntropy
+                    lowestEntropyTiles = []
+                if currentEntropy == lowestEntropyTiles:
+                    lowestEntropyTiles.append([i, j])
 
-    
-    
+    if lowestEntropyTiles != 1: #can prob clean this up
+        i = random.randint(lowestEntropyTiles.len())
+        return lowestEntropyTiles[i]
+    else: return lowestEntropyTiles[0]
 
-def getLowestEntropy(xIndex, yIndex):
-    #maybe we don't need this until we make it complicated. Drawing a map shouldnt need this
-    #will need to check 4 (or 8?) closest tiles. only check if 
-    return 0
-    
-#THESE NEED TO CHANGE BOOLEAN 3D ARRAY TO ALLOW IF TILES CAN BE CHOSEN!
 def water(xIndex , yIndex):
     """Draws and saves water tile to image
     
@@ -102,6 +123,11 @@ def water(xIndex , yIndex):
 
     wavefunctionalgo.map[xIndex][yIndex] = 1
 
+    wavefunctionalgo.mapBool[xIndex + 1][yIndex] == [True, True, False] #tiles surrounding cannot be land
+    wavefunctionalgo.mapBool[xIndex - 1][yIndex] == [True, True, False]
+    wavefunctionalgo.mapBool[xIndex][yIndex + 1] == [True, True, False]
+    wavefunctionalgo.mapBool[xIndex][yIndex - 1] == [True, True, False]
+
 def coast(xIndex, yIndex):
     import wavefunctionalgo
     wavefunctionalgo.img.putpixel((xIndex * 4, yIndex * 4), (242,209, 107)) #better way to do this?
@@ -124,6 +150,8 @@ def coast(xIndex, yIndex):
 
     wavefunctionalgo.map[xIndex][yIndex] = 2
 
+    #No mapbool here since adjacent peices can be either coast or water
+
 def land(xIndex, yIndex):
     import wavefunctionalgo
     wavefunctionalgo.img.putpixel((xIndex * 4, yIndex * 4), (0,154,23)) #better way to do this?
@@ -145,3 +173,8 @@ def land(xIndex, yIndex):
     wavefunctionalgo.img.save("output.png")
 
     wavefunctionalgo.map[xIndex][yIndex] = 3
+
+    wavefunctionalgo.mapBool[xIndex + 1][yIndex] == [False, True, True] #tiles surrounding cannot be water
+    wavefunctionalgo.mapBool[xIndex - 1][yIndex] == [False, True, True]
+    wavefunctionalgo.mapBool[xIndex][yIndex + 1] == [False, True, True]
+    wavefunctionalgo.mapBool[xIndex][yIndex - 1] == [False, True, True]

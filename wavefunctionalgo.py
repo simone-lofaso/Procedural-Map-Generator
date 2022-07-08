@@ -33,7 +33,9 @@ mapBool = numpy.array([[[True,True,True], [True,True,True],[True,True,True],[Tru
 #Then, pick random tile
 #pick random tile next to tile, then pick tile there, propogate new constraints to neighboring cells
 #find lowest entropy in matrix, basically we want to use mapbool and find the least amount of trues
-        
+# https://youtu.be/20KHNA9jTsE?t=435 
+
+
                        
 img = Image.new('RGB', (64, 64 ))
 img.save('output.png')
