@@ -1,16 +1,10 @@
-#This class will represent our pre-drawn tiles
-#from PIL import Image
 import math
 import random
 import numpy
-#format CURRENTTILE_NEXT_TILE CHANCE
-#ex: water_ coast_chance is the chance if the current tile is water for the next tile to be coast
-#these are all placeholder values, feel free to change
+
 WATER_CHANCE = .33
 COAST_CHANCE = .33
 LAND_CHANCE = .34
-#these are not done yet. will need each relation for possible tiles touchin
-#also the values are placeholder, feel free to change if you want to
 
 #  1 = water
 #  2 = coast
@@ -21,23 +15,22 @@ if __name__ == "__main__":
     print("run wavefunctionalgo.py ya doofus")
     quit
 
-
-#NEED TO IMPLEMENT CHECKING WITH BOOLEAN 3D ARRAY!!!!!!!!! DO NOT FORGET!!!
-def chooseTile(xIndex, yIndex): #need more clear param names
-    """ FINISH DESCRIPTION
+#IF WE WANT TO ADD RULES THAT MAKE WATER CLUMP UP MORE, WE WOULD CHANGE THIS METHOD
+def chooseTile(xIndex, yIndex):
+    """ Chooses tile based on possible tiles
     
 
     Parameters:
         xIndex: the x Index of the current tile
         yIndex: the Y Index of the current tile
     """
-    import wavefunctionalgo #want to figure out how to import this at the top 
+    import wavefunctionalgo
     possibleTiles = wavefunctionalgo.mapBool[xIndex][yIndex]
     print(possibleTiles)
     if numpy.array_equiv([True, True, True], possibleTiles):
         tiles = [1,2,3]
         choice = random.choices(tiles, weights = (WATER_CHANCE, COAST_CHANCE, LAND_CHANCE))
-        choice = choice[0]
+        choice = choice[0] #random.choices returns single element list, so I get the only element from it
         if choice == 1: #not a switch statement because this was developed on python 3.9 (they came in 3.10)
             water(xIndex, yIndex)
         elif choice == 2:
@@ -63,11 +56,16 @@ def chooseTile(xIndex, yIndex): #need more clear param names
         elif choice == 3:
             land(xIndex, yIndex)
     
-#iterate through map matrix
-#if not 0, get neighboring cell tiles and find entropy using their weightage
-#if surrounding bits dont have tiles, use mapBool to determine entropy
-#return list of equal entropy (unlikely to be one but), then choose a random one
+#so i wanna make water and land clump together instead of being the way they are
+#so probablt the best way of doing that is, if water is touching tile to be chosen, it uses a different weightage 
 def getLowestEntropy():
+    """Gets lowest entropy tile of map. If map is filled, then it will terminate the program.
+
+    Returns:
+        Tuple of x and y coordinates of the tile with lowest entropy. 
+    
+    """
+
     import wavefunctionalgo
     lowestEntropy = 999
     currentEntropy = 0
@@ -88,19 +86,19 @@ def getLowestEntropy():
                     lowestEntropy = currentEntropy
                     lowestEntropyTile = i, j
     if lowestEntropy == 999:
-        print("this probably ended")
+        print("Grid is full")
         quit()         
     return lowestEntropyTile
 
 def water(xIndex , yIndex):
-    """Draws and saves water tile to image
+    """Draws and saves water tile to image. Also propagates information to mapBool that surrounding tiles cannot be land
     
     Parameters:
-        xIndex: the x Index of the matrix
+        xIndex: the x Index of the matrix 
         yIndex: the y Index of the matrix
     """
-    import wavefunctionalgo #avoids circular import. is this the best way to do it? Fuck you.
-    wavefunctionalgo.img.putpixel((xIndex * 4, yIndex * 4), (28,163,236)) #better way to do this?
+    import wavefunctionalgo #avoids circular import
+    wavefunctionalgo.img.putpixel((xIndex * 4, yIndex * 4), (28,163,236)) 
     wavefunctionalgo.img.putpixel((xIndex * 4 + 1, yIndex * 4), (28,163,236))
     wavefunctionalgo.img.putpixel((xIndex * 4 + 2, yIndex * 4), (28,163,236))
     wavefunctionalgo.img.putpixel((xIndex * 4 + 3, yIndex * 4), (28,163,236))
@@ -130,6 +128,12 @@ def water(xIndex , yIndex):
         wavefunctionalgo.mapBool[xIndex][yIndex - 1] = [True, True, False]
 
 def coast(xIndex, yIndex):
+    """Draws and saves coast tile to image. No propagation here because coast can be next to water and land.
+    
+    Parameters:
+        xIndex: the x Index of the matrix 
+        yIndex: the y Index of the matrix
+    """
     import wavefunctionalgo
     wavefunctionalgo.img.putpixel((xIndex * 4, yIndex * 4), (242,209, 107)) #better way to do this?
     wavefunctionalgo.img.putpixel((xIndex * 4 + 1, yIndex * 4), (242,209, 107))
@@ -151,9 +155,15 @@ def coast(xIndex, yIndex):
 
     wavefunctionalgo.map[xIndex][yIndex] = 2
 
-    #No mapbool here since adjacent peices can be either coast or water
+    #No mapbool here since adjacent pieces can be either coast or water
 
 def land(xIndex, yIndex):
+    """Draws and saves land tile to image. Also propagates information to mapBool that surrounding tiles cannot be water
+    
+    Parameters:
+        xIndex: the x Index of the matrix 
+        yIndex: the y Index of the matrix
+    """
     import wavefunctionalgo
     wavefunctionalgo.img.putpixel((xIndex * 4, yIndex * 4), (0,154,23)) #better way to do this?
     wavefunctionalgo.img.putpixel((xIndex * 4 + 1, yIndex * 4), (0,154,23))
