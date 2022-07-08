@@ -1,17 +1,14 @@
 #This class will represent our pre-drawn tiles
 #from PIL import Image
-from asyncio.windows_events import NULL
-from cmath import log
 import math
 import random
-from turtle import pos
-
+import numpy
 #format CURRENTTILE_NEXT_TILE CHANCE
 #ex: water_ coast_chance is the chance if the current tile is water for the next tile to be coast
 #these are all placeholder values, feel free to change
-WATER_CHANCE = .4
-COAST_CHANCE = .2
-LAND_CHANCE = .4
+WATER_CHANCE = .33
+COAST_CHANCE = .33
+LAND_CHANCE = .34
 #these are not done yet. will need each relation for possible tiles touchin
 #also the values are placeholder, feel free to change if you want to
 
@@ -36,27 +33,31 @@ def chooseTile(xIndex, yIndex): #need more clear param names
     """
     import wavefunctionalgo #want to figure out how to import this at the top 
     possibleTiles = wavefunctionalgo.mapBool[xIndex][yIndex]
-    if possibleTiles == [True, True, True]:
+    print(possibleTiles)
+    if numpy.array_equiv([True, True, True], possibleTiles):
         tiles = [1,2,3]
         choice = random.choices(tiles, weights = (WATER_CHANCE, COAST_CHANCE, LAND_CHANCE))
+        choice = choice[0]
         if choice == 1: #not a switch statement because this was developed on python 3.9 (they came in 3.10)
             water(xIndex, yIndex)
         elif choice == 2:
             coast(xIndex, yIndex)
         elif choice ==  3:
             land(xIndex, yIndex)
-    elif possibleTiles == [True, True, False]:
+    elif numpy.array_equiv([True, True, False], possibleTiles):
         tiles = [1,2]
         choice = random.choices(tiles, weights = (WATER_CHANCE, COAST_CHANCE))
+        choice = choice[0]
         if choice == 1:
             water(xIndex, yIndex)
         elif choice == 2:
             coast(xIndex, yIndex)
-    elif possibleTiles == [False, True, False]:
+    elif numpy.array_equiv([False, True, False], possibleTiles):
         coast(xIndex, yIndex)
-    elif possibleTiles == [False, True, True]:
+    elif numpy.array_equiv([False, True, True], possibleTiles):
         tiles = [2,3]
         choice = random.choices(tiles, weights = (COAST_CHANCE, LAND_CHANCE))
+        choice = choice[0]
         if choice == 2:
             coast(xIndex, yIndex)
         elif choice == 3:
@@ -68,32 +69,28 @@ def chooseTile(xIndex, yIndex): #need more clear param names
 #return list of equal entropy (unlikely to be one but), then choose a random one
 def getLowestEntropy():
     import wavefunctionalgo
-    import random
     lowestEntropy = 999
     currentEntropy = 0
-    lowestEntropyTiles = []
+    lowestEntropyTile = 999, 999
     for i in range(16):
         for j in range(16):
-            if wavefunctionalgo.map[i][j] != 0: #checking to see if neigboring tile is water. if yes it will be more likely to choose it
+            if wavefunctionalgo.map[i][j] == 0:
                 possibleTiles = wavefunctionalgo.mapBool[i][j]
-                if possibleTiles == [True, True, True]: 
+                if numpy.array_equiv([True, True, True], possibleTiles): 
                     currentEntropy = - (WATER_CHANCE * math.log(WATER_CHANCE) + COAST_CHANCE * math.log(COAST_CHANCE) + LAND_CHANCE * math.log(LAND_CHANCE))
-                elif possibleTiles == [True, True, False]:
+                elif numpy.array_equiv([True, True, False], possibleTiles):
                     currentEntropy = - (WATER_CHANCE * math.log(WATER_CHANCE) + COAST_CHANCE * math.log(COAST_CHANCE))
-                elif possibleTiles == [False, True, True]:
+                elif numpy.array_equiv([False, True, True], possibleTiles):
                     currentEntropy = - (COAST_CHANCE * math.log(COAST_CHANCE) + LAND_CHANCE * math.log(LAND_CHANCE))
-                elif possibleTiles == [False, True, False]:
+                elif numpy.array_equiv([False, True, False], possibleTiles):
                     currentEntropy = - (COAST_CHANCE * math.log(COAST_CHANCE))
                 if currentEntropy < lowestEntropy:
                     lowestEntropy = currentEntropy
-                    lowestEntropyTiles = []
-                if currentEntropy == lowestEntropyTiles:
-                    lowestEntropyTiles.append([i, j])
-
-    if lowestEntropyTiles != 1: #can prob clean this up
-        i = random.randint(lowestEntropyTiles.len())
-        return lowestEntropyTiles[i]
-    else: return lowestEntropyTiles[0]
+                    lowestEntropyTile = i, j
+    if lowestEntropy == 999:
+        print("this probably ended")
+        quit()         
+    return lowestEntropyTile
 
 def water(xIndex , yIndex):
     """Draws and saves water tile to image
@@ -123,10 +120,14 @@ def water(xIndex , yIndex):
 
     wavefunctionalgo.map[xIndex][yIndex] = 1
 
-    wavefunctionalgo.mapBool[xIndex + 1][yIndex] == [True, True, False] #tiles surrounding cannot be land
-    wavefunctionalgo.mapBool[xIndex - 1][yIndex] == [True, True, False]
-    wavefunctionalgo.mapBool[xIndex][yIndex + 1] == [True, True, False]
-    wavefunctionalgo.mapBool[xIndex][yIndex - 1] == [True, True, False]
+    if xIndex + 1 < 16: #tiles surrounding cant be land
+        wavefunctionalgo.mapBool[xIndex + 1][yIndex] = [True, True, False] 
+    if xIndex - 1 >= 0:
+        wavefunctionalgo.mapBool[xIndex - 1][yIndex] = [True, True, False]
+    if yIndex + 1 < 16:
+        wavefunctionalgo.mapBool[xIndex][yIndex + 1] = [True, True, False]
+    if yIndex - 1 >= 0:
+        wavefunctionalgo.mapBool[xIndex][yIndex - 1] = [True, True, False]
 
 def coast(xIndex, yIndex):
     import wavefunctionalgo
@@ -174,7 +175,11 @@ def land(xIndex, yIndex):
 
     wavefunctionalgo.map[xIndex][yIndex] = 3
 
-    wavefunctionalgo.mapBool[xIndex + 1][yIndex] == [False, True, True] #tiles surrounding cannot be water
-    wavefunctionalgo.mapBool[xIndex - 1][yIndex] == [False, True, True]
-    wavefunctionalgo.mapBool[xIndex][yIndex + 1] == [False, True, True]
-    wavefunctionalgo.mapBool[xIndex][yIndex - 1] == [False, True, True]
+    if xIndex + 1 < 16:#tiles surrounding cannot be water
+        wavefunctionalgo.mapBool[xIndex + 1][yIndex] = [False, True, True] 
+    if xIndex - 1 >= 0:
+        wavefunctionalgo.mapBool[xIndex - 1][yIndex] = [False, True, True]
+    if yIndex + 1 < 16:
+        wavefunctionalgo.mapBool[xIndex][yIndex + 1] = [False, True, True]
+    if yIndex - 1 >= 0:
+        wavefunctionalgo.mapBool[xIndex][yIndex - 1] = [False, True, True]
