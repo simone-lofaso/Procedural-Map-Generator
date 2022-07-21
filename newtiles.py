@@ -39,7 +39,7 @@ def chooseTile(xIndex, yIndex):
     elif numpy.array_equiv(possibleTiles, [True, True, True, False, True]):
         tileList = [1, 2, 3, 5]
         flowerWeightage = 0
-        waterWeightage = 0
+        waterWeightage = 0 #rework these weightage, need possibilty of new tile to be chosen
         coastWeightage = 0
         landWeightage = 0
         for item in neighbors:
