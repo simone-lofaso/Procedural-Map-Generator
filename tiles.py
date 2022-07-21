@@ -68,7 +68,6 @@ def getLowestEntropy():
 
     import wavefunctionalgo
     lowestEntropy = 999
-    currentEntropy = 0
     lowestEntropyTile = 999, 999
     for i in range(16):
         for j in range(16):

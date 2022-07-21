@@ -6,9 +6,9 @@ map = numpy.zeros((24,24))
 
 #map 3d array used for tracking what tiles can be put at that given location. Everything starts as true
 
-#1 is water
+#1 is land
 #2 is coast
-#3 is land
+#3 is water
 #4 is rock
 #5 is flower
 
