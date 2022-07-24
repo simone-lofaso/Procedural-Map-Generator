@@ -2,9 +2,45 @@ import math
 import random
 import numpy
 
+
 def getLowestEntropy():
+    import newwavefunction
+    lowestEntropy = 999
+    lowestEntropyTile = 999, 999
+    for i in range(24):
+        for j in range(24):
+            if newwavefunction.map[i][j] == 0:
+                neighbors = []
+                if i + 1 < 24:
+                    if newwavefunction.map[i + 1][j] > 0:
+                        neighbors.append(newwavefunction.map[i + 1][j])
+                if j + 1 < 24:
+                    if newwavefunction.map[i][j + 1] > 0:
+                        neighbors.append(newwavefunction.map[i][j +1])
+                if i - 1 >= 0:
+                    if newwavefunction.map[i - 1][j] > 0:
+                        neighbors.append(newwavefunction.map[i - 1][j])
+                if j - 1 >= 0:
+                    if newwavefunction.map[i][j - 1] > 0:
+                        neighbors.append(newwavefunction.map[i][j - 1])
+
+    possibleTiles = newwavefunction.mapBool[i][j]
+    if numpy.array_equiv(possibleTiles, [True, True, True, True, True]): #will only occur on first pick. Therefore all chances equal
+        FLOWER_CHANCE = .20
+        ROCK_CHANCE = .20
+        WATER_CHANCE = .20
+        COAST_CHANCE = .20
+        LAND_CHANCE = .20 #technically this number will be a constant so we can get rid of all this math, however keeping us lets us change the weightage of the first tile
+        currentEntropy = - ( math.log(FLOWER_CHANCE) * FLOWER_CHANCE + math.log(ROCK_CHANCE) * ROCK_CHANCE + math.log(WATER_CHANCE) * WATER_CHANCE + math.log(COAST_CHANCE) * COAST_CHANCE + math.log(LAND_CHANCE) * LAND_CHANCE)
+
+    elif numpy.array_equiv(possibleTiles, [True, True, True, True, False]):
+        ROCK_CHANCE = .20 #flat percentage as rocks are not affected by grouping. Might want to move this to the top
+        WATER_CHANCE = .1
+        COAST_CHANCE = .1
+        LAND_CHANCE = .1
     return 0
 
+#new choose tile will be VERY simple. Probably just needs to pass in location and then the chances from lowestEntropy
 def chooseTile(xIndex, yIndex):
     import newwavefunction
     neighbors = []
