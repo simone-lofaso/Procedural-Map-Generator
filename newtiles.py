@@ -4,6 +4,12 @@ import numpy
 
 
 def getLowestEntropy():
+    """
+    Gets lowest entropy of all tiles on the board. Used to find the next piece to fill
+
+    
+    
+    """
     import newwavefunction
     lowestEntropy = 999
     lowestEntropyTile = 999, 999
@@ -25,8 +31,8 @@ def getLowestEntropy():
                         neighbors.append(newwavefunction.map[i][j - 1])
 
     possibleTiles = newwavefunction.mapBool[i][j]
-    if numpy.array_equiv(possibleTiles, [True, True, True, True, True]): #will only occur on first pick. Therefore all chances equal
-        FLOWER_CHANCE = .20
+    if numpy.array_equiv(possibleTiles, [True, True, True, True, True]): #will only occur on first pick. Therefore all chances equal. Switch statement could also be used here
+        FLOWER_CHANCE = .20 
         ROCK_CHANCE = .20
         WATER_CHANCE = .20
         COAST_CHANCE = .20
@@ -38,65 +44,16 @@ def getLowestEntropy():
         WATER_CHANCE = .1
         COAST_CHANCE = .1
         LAND_CHANCE = .1
+        for tile in neighbors:
+            if tile == 4: #rock
+            
     return 0
 
 #new choose tile will be VERY simple. Probably just needs to pass in location and then the chances from lowestEntropy
 def chooseTile(xIndex, yIndex):
-    import newwavefunction
-    neighbors = []
-    if xIndex + 1 < 24:
-        if newwavefunction.map[xIndex + 1][yIndex] > 0:
-            neighbors.append(newwavefunction.map[xIndex + 1][yIndex])
-    if yIndex + 1 < 24:
-        if newwavefunction.map[xIndex][yIndex + 1] > 0:
-            neighbors.append(newwavefunction.map[xIndex][yIndex +1])
-    if xIndex - 1 >= 0:
-        if newwavefunction.map[xIndex - 1][yIndex] > 0:
-            neighbors.append(newwavefunction.map[xIndex - 1][yIndex])
-    if yIndex - 1 >= 0:
-        if newwavefunction.map[xIndex][yIndex - 1] > 0:
-            neighbors.append(newwavefunction.map[xIndex][yIndex - 1])
     
-    possibleTiles = newwavefunction.mapBool[xIndex][yIndex]
-
-    if numpy.array_equiv(possibleTiles, [True, True, True, True, True]):
-        choice = random.randint(1, 5)
-        if choice == 1:
-            land(xIndex, yIndex)
-        elif choice == 2:
-            coast(xIndex, yIndex)
-        elif choice == 3:
-            water(xIndex, yIndex)
-        elif choice == 4:
-            rock(xIndex, yIndex)
-        elif choice == 5:
-            flower(xIndex, yIndex)
-
-    elif numpy.array_equiv(possibleTiles, [True, True, True, False, True]):
-        tileList = [1, 2, 3, 5]
-        flowerWeightage = 0
-        waterWeightage = 0 #rework these weightage, need possibilty of new tile to be chosen
-        coastWeightage = 0
-        landWeightage = 0
-        for item in neighbors:
-            if item == 5: #replace with switch statement if not lazy  
-                flowerWeightage += .25
-            elif item == 3:
-                waterWeightage += .25
-            elif item == 2:
-                coastWeightage += .25
-            else:
-                landWeightage += .25
-        choice = random.choices(tileList, weights = (landWeightage, coastWeightage, waterWeightage, coastWeightage))
-        choice = choice[0]
-        if choice == 1:
-            land(xIndex, yIndex)
-        elif choice == 2:
-            coast(xIndex, yIndex)
-        elif choice == 3:
-            water(xIndex, yIndex)
-        elif choice == 5:
-            flower(xIndex, yIndex)
+    choice = random.choices(tileList, weights = (landWeightage, coastWeightage, waterWeightage, coastWeightage))
+    choice = choice[0]
 
 
 
