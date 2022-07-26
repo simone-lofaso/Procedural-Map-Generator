@@ -11,9 +11,9 @@ import numpy
 #no rock done   [True, True, True, False, True]
 #no rock, no flower done [True, True, True, False, False]
 #no rock, no land, done  [False, True, True, True, False, True]
-#no rock, no land, no flower [False, True, True, False, False]
+#no rock, no land, done no flower [False, True, True, False, False]
 #no rock, no water [True, True, False, False, True]
-#no rock, no water, no flower [True, True, False, False, True]
+#no rock, no water, no flower [True, True, False, False, False]
 
 
 
@@ -114,6 +114,7 @@ def getLowestEntropy():
             elif tile == 2:
                 COAST_CHANCE += .175
        
+    #Entropy when rock, land, and flower are impossible
     elif numpy.array_equiv(possibleTiles, [False, True, True, False, False]):
         WATER_CHANCE = .1
         COAST_CHANCE = .1
@@ -121,8 +122,9 @@ def getLowestEntropy():
             if tile == 3:
                 WATER_CHANCE += .2
             elif tile == 2:
-                COAST_CHANCE += 2.
+                COAST_CHANCE += .2
     
+    #Entropy when rock and water are impossible
     elif 
     
     try:
