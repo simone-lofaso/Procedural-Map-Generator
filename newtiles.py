@@ -6,16 +6,26 @@ import numpy
 #all possible done
 #FLOWER
 #no flower done  [True, True, True, True, False]
+#no water, no flower done [True, True, False, True, False]
+#no land, no flower [False, True, True, True, False]
+#no land, no water, no rock, no flower [False, True, False, False, False]
 
-#ROCK
+#ROCK DONE
 #no rock done   [True, True, True, False, True]
 #no rock, no flower done [True, True, True, False, False]
 #no rock, no land, done  [False, True, True, True, False, True]
 #no rock, no land, done no flower [False, True, True, False, False]
-#no rock, no water [True, True, False, False, True]
-#no rock, no water, no flower [True, True, False, False, False]
+#no rock, no water done [True, True, False, False, True]
+#no rock, no water, no flower done [True, True, False, False, False]
+
+#WATER
 
 
+#LAND
+#No land, No rock[False, True, True, False, True]
+#No land, no water [False, True, False, True, True]
+#No land, no water, no rock #[False, True, False, False, True]
+#No land, no water, no flower #[False, True, False, True, False]
 
 
 def getLowestEntropy():
@@ -50,7 +60,7 @@ def getLowestEntropy():
                 if j - 1 >= 0:
                     if newwavefunction.map[i][j - 1] > 0:
                         neighbors.append(newwavefunction.map[i][j - 1])
-
+    
     possibleTiles = newwavefunction.mapBool[i][j]
     if numpy.array_equiv(possibleTiles, [True, True, True, True, True]): #will only occur on first pick. Therefore all chances equal. Switch statement could also be used here
         FLOWER_CHANCE = .20 
@@ -125,11 +135,102 @@ def getLowestEntropy():
                 COAST_CHANCE += .2
     
     #Entropy when rock and water are impossible
-    elif 
+    elif numpy.array_equiv(possibleTiles, [True, True, False, False, True]):
+        FLOWER_CHANCE = .1
+        COAST_CHANCE = .1
+        LAND_CHANCE = .1
+        for tile in neighbors:
+            if tile == 5:
+                FLOWER_CHANCE += .175
+            elif tile == 2:
+                COAST_CHANCE += .175
+            elif tile == 1:
+                LAND_CHANCE += .175
     
-    try:
+    #Entropy when rock, water, and flower are impossible
+    elif numpy.array_equiv(possibleTiles, [True, True, False, False, False]):
+        COAST_CHANCE = .1
+        LAND_CHANCE = .1
+        for tile in neighbors:
+            if tile == 2:
+                COAST_CHANCE += .2
+            elif tile == 1:
+                LAND_CHANCE += .2
+     
+    #Entropy when flower and water are impossible
+    elif numpy.array_equiv(possibleTiles, [True, True, False, True, False]):
+        ROCK_CHANCE = .2
+        COAST_CHANCE = .1
+        LAND_CHANCE = .1
+        for tile in neighbors:
+            if tile == 2:
+                COAST_CHANCE += .15
+            elif tile == 1:
+                LAND_CHANCE += .15
+    
+    #Entropy when water, rock, land, and flower are impossible
+    elif numpy.array_equiv(possibleTiles, [False, True, False, False, False]):
+        COAST_CHANCE = 1
+        
+#LAND
+#No land, No rock done[False, True, True, False, True]
+#No land, no water done [False, True, False, True, True]
+#No land, no water, no rock done [False, True, False, False, True]
+#No land, no water, no flower done [False, True, False, True, False]
+
+#adding percentage will be percentage left from flat chance / 4
+#flat chance = flower + water + coast = .3
+#(1 - .3) / 4 = .175
+
+    #When land and rock are impossible
+    elif numpy.array_equiv(possibleTiles, [False, True, True, False, True]):
+        FLOWER_CHANCE = .1
+        WATER_CHANCE = .1
+        COAST_CHANCE = .1
+        for tile in neighbors:
+            if tile == 5:
+                FLOWER_CHANCE += .175
+            elif tile == 3:
+                WATER_CHANCE += .175
+            elif tile == 2:
+                COAST_CHANCE += .175
+                
+    #When land and water are impossible
+    elif numpy.array_equiv(possibleTiles, [False, True, False, True, True]):
+        FLOWER_CHANCE = .1
+        ROCK_CHANCE = .2
+        COAST_CHANCE = .1
+        for tile in neighbors:
+            if tile == 5:
+                FLOWER_CHANCE += .2
+            elif tile == 2:
+                COAST_CHANCE += .2
+                
+    #When land, water, and rock are impossible
+    elif numpy.array_equiv(possibleTiles, [False, True, False, False, True]):
+        FLOWER_CHANCE = .1
+        COAST_CHANCE = .1
+        for tile in neighbors:
+            if tile == 5:
+                FLOWER_CHANCE += .2
+            elif tile == 2:
+                COAST_CHANCE += .2
+                
+    #When land, water, and flower are impossible
+    elif numpy.array_equiv(possibleTiles, [False, True, False, True, False]):
+        ROCK_CHANCE = .2
+        COAST_CHANCE = .1
+        for tile in neighbors:
+            if tile == 2:
+                COAST_CHANCE += .175
+                
+    #When
+    elif
+        
+        
+    if (FLOWER_CHANCE == 0 or ROCK_CHANCE == 0 or WATER_CHANCE == 0 or COAST_CHANCE == 0 or LAND_CHANCE == 0):
         currentEntropy = - ( math.log(FLOWER_CHANCE) * FLOWER_CHANCE + math.log(ROCK_CHANCE) * ROCK_CHANCE + math.log(WATER_CHANCE) * WATER_CHANCE + math.log(COAST_CHANCE) * COAST_CHANCE + math.log(LAND_CHANCE) * LAND_CHANCE)    
-    except ValueError:
+    else:
         currentEntropy = 999
     
     if currentEntropy == 999:
