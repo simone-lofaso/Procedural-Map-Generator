@@ -224,8 +224,8 @@ def getLowestEntropy():
             if tile == 2:
                 COAST_CHANCE += .175
                 
-    #When
-    elif
+    #Space for more if we need em
+
         
         
     if (FLOWER_CHANCE == 0 or ROCK_CHANCE == 0 or WATER_CHANCE == 0 or COAST_CHANCE == 0 or LAND_CHANCE == 0):
@@ -240,7 +240,8 @@ def getLowestEntropy():
     return FLOWER_CHANCE, ROCK_CHANCE, WATER_CHANCE, COAST_CHANCE, LAND_CHANCE, i, j
 
 #new choose tile will be VERY simple. Probably just needs to pass in location and then the chances from lowestEntropy
-def chooseTile(xIndex, yIndex):
+def chooseTile(xIndex, yIndex, FLOWER_CHANCE, ROCK_CHANCE, WATER_CHANCE, COAST_CHANCE, LAND_CHANCE):
+    #takes in these params (location and weightage for each tile) and uses method below to randomly pick from list of tiles
     
     choice = random.choices(tileList, weights = (landWeightage, coastWeightage, waterWeightage, coastWeightage))
     choice = choice[0]
