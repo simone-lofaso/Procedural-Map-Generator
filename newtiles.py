@@ -224,7 +224,7 @@ def getLowestEntropy():
                 COAST_CHANCE += .175
     
     else:
-        print("Error: Scenario unnacounted for")
+        print("Error: Scenario unaccounted for")
         print(newwavefunction.mapBool[i][j])            
         
     if (FLOWER_CHANCE == 0 or ROCK_CHANCE == 0 or WATER_CHANCE == 0 or COAST_CHANCE == 0 or LAND_CHANCE == 0):
