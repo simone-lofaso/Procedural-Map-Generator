@@ -1,7 +1,7 @@
 import numpy
 from PIL import Image
 import newtiles
-from tiles import COAST_CHANCE, LAND_CHANCE, WATER_CHANCE
+import time
 
 map = numpy.zeros((24,24))
 
@@ -42,13 +42,14 @@ mapBool = numpy.array([[[True, True, True, True, True], [True, True, True, True,
 
 
                
-img = Image.new('RGB', (96, 96))
+img = Image.new('RGB', (144, 144))
 
 img.save('output2.png')
 img.show
-
+#time.sleep(5)
 while True:
     FLOWER_CHANCE, ROCK_CHANCE, WATER_CHANCE, COAST_CHANCE, LAND_CHANCE, xIndex, yIndex = newtiles.getLowestEntropy()
     print(xIndex, yIndex)
     newtiles.chooseTile(xIndex, yIndex, FLOWER_CHANCE, ROCK_CHANCE, WATER_CHANCE, COAST_CHANCE, LAND_CHANCE)
     img.show
+
