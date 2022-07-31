@@ -304,6 +304,15 @@ def flower(xIndex, yIndex):
     newwavefunction.map[xIndex][yIndex] == 5
 
     newwavefunction.img.save("output2.png")
+    
+    if xIndex + 1 < 24:
+        newwavefunction.mapBool[xIndex + 1][yIndex][3] = False
+    if xIndex - 1 >= 0: 
+        newwavefunction.mapBool[xIndex - 1][yIndex][3] = False
+    if yIndex + 1 < 24:
+        newwavefunction.mapBool[xIndex][yIndex + 1][3] = False
+    if yIndex - 1 >= 0:
+        newwavefunction.mapBool[xIndex][yIndex - 1][3] = False
 
     
 def rock(xIndex, yIndex):
@@ -400,6 +409,19 @@ def water(xIndex, yIndex):
     newwavefunction.img.save("output2.png")
 
     newwavefunction.map[xIndex][yIndex] == 3
+    
+    if xIndex + 1 < 24:
+        newwavefunction.mapBool[xIndex + 1][yIndex][1] = False
+        newwavefunction.mapBool[xIndex + 1][yIndex][5] = False
+    if xIndex - 1 >= 0: 
+        newwavefunction.mapBool[xIndex - 1][yIndex][1] = False
+        newwavefunction.mapBool[xIndex - 1][yIndex][5] = False
+    if yIndex + 1 < 24:
+        newwavefunction.mapBool[xIndex][yIndex + 1][1] = False
+        newwavefunction.mapBool[xIndex][yIndex + 1][5] = False
+    if yIndex - 1 >= 0:
+        newwavefunction.mapBool[xIndex][yIndex - 1][1] = False
+        newwavefunction.mapBool[xIndex][yIndex - 1][5] = False
 
 
 def coast(xIndex, yIndex):
@@ -487,5 +509,14 @@ def land(xIndex, yIndex):
     newwavefunction.img.putpixel((xIndex * 6 + 5, yIndex * 6 + 5), (0,154,23))
 
     newwavefunction.img.save("output2.png")
+    
+    if xIndex + 1 < 24:
+        newwavefunction.mapBool[xIndex + 1][yIndex][3] = False
+    if xIndex - 1 >= 0: 
+        newwavefunction.mapBool[xIndex - 1][yIndex][3] = False
+    if yIndex + 1 < 24:
+        newwavefunction.mapBool[xIndex][yIndex + 1][3] = False
+    if yIndex - 1 >= 0:
+        newwavefunction.mapBool[xIndex][yIndex - 1][3] = False
 
     newwavefunction.map[xIndex][yIndex] == 1
