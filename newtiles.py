@@ -1,5 +1,4 @@
 import math
-from multiprocessing.sharedctypes import Value
 import random
 import numpy
 
@@ -26,8 +25,6 @@ import numpy
 #No land, no water [False, True, False, True, True]
 #No land, no water, no rock #[False, True, False, False, True]
 #No land, no water, no flower #[False, True, False, True, False]
-
-
 
 
 def getLowestEntropy():
@@ -242,12 +239,25 @@ def getLowestEntropy():
     return FLOWER_CHANCE, ROCK_CHANCE, WATER_CHANCE, COAST_CHANCE, LAND_CHANCE, i, j
 
 #new choose tile will be VERY simple. Probably just needs to pass in location and then the chances from lowestEntropy
-def chooseTile(xIndex, yIndex):
+def chooseTile(xIndex, yIndex, FLOWER_CHANCE, ROCK_CHANCE, WATER_CHANCE, COAST_CHANCE, LAND_CHANCE):
+    #takes in these params (location and weightage for each tile) and uses method below to randomly pick from list of tiles
+    tileList = [1, 2, 3, 4, 5]
     
     
-    choice = random.choices(tileList, weights = (landWeightage, coastWeightage, waterWeightage, coastWeightage))
+    choice = random.choices(tileList, weights = (LAND_CHANCE, COAST_CHANCE, WATER_CHANCE, ROCK_CHANCE, FLOWER_CHANCE))
     choice = choice[0]
 
+    if choice == 1:
+        land(xIndex, yIndex)
+    elif choice == 2:
+        coast(xIndex, yIndex)
+    elif choice == 3:
+        water(xIndex, yIndex)
+    elif choice == 4:
+        rock(xIndex, yIndex)
+    elif choice == 5:
+        flower(xIndex, yIndex)
+        
 
 
 
