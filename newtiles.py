@@ -244,6 +244,23 @@ def getLowestEntropy():
                             COAST_CHANCE += .175
                 
                     currentEntropy = - ( math.log(ROCK_CHANCE) * ROCK_CHANCE  + math.log(COAST_CHANCE) * COAST_CHANCE) 
+                
+                #When water is impossible
+                elif numpy.array_equiv(possibleTiles, [True, True, False, True, True]):
+                    FLOWER_CHANCE = .1
+                    ROCK_CHANCE = .2
+                    COAST_CHANCE = .1
+                    LAND_CHANCE = .1
+                    for tile in neighbors:
+                        if tile == 5:
+                            FLOWER_CHANCE += .125
+                        elif tile == 2:
+                            COAST_CHANCE += .125
+                        elif tile == 1:
+                            LAND_CHANCE += .125
+                            
+                    
+                currentEntropy = - ( math.log(FLOWER_CHANCE) * FLOWER_CHANCE + math.log(ROCK_CHANCE) * ROCK_CHANCE + math.log(COAST_CHANCE) * COAST_CHANCE + math.log(LAND_CHANCE) * LAND_CHANCE)            
 
                 elif numpy.array_equiv(possibleTiles, [False, True, True, True, False]):
                     ROCK_CHANCE = .2
