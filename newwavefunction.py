@@ -46,10 +46,11 @@ img = Image.new('RGB', (144, 144))
 
 img.save('output2.png')
 img.show
-#time.sleep(5)
+time.sleep(2)
 while True:
     FLOWER_CHANCE, ROCK_CHANCE, WATER_CHANCE, COAST_CHANCE, LAND_CHANCE, xIndex, yIndex = newtiles.getLowestEntropy()
     print(xIndex, yIndex)
     newtiles.chooseTile(xIndex, yIndex, FLOWER_CHANCE, ROCK_CHANCE, WATER_CHANCE, COAST_CHANCE, LAND_CHANCE)
     img.show
+    time.sleep(.1)
 

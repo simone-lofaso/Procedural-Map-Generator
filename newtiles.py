@@ -1,5 +1,4 @@
 import math
-from operator import ilshift
 import random
 import numpy
 
@@ -28,9 +27,8 @@ import numpy
 #No land, no water, no flower #[False, True, False, True, False]
 
 
-#NEED TO ADD 0 CHANCES IN EVERY CASE, I WILL EXPLAIN
-#MISSING SCENARIO TRUE TRUE FASLE TRUE TRUE
 
+#change rock weightage to .1 and fix corresponding weightage
 def getLowestEntropy():
     """
     Gets lowest entropy of all tiles on the board. Used to find the next piece to fill
@@ -44,15 +42,16 @@ def getLowestEntropy():
     lowestEntropyY = 999
     currentEntropy = 999
 
-    FLOWER_CHANCE = 0
-    ROCK_CHANCE = 0
-    WATER_CHANCE = 0
-    COAST_CHANCE = 0
-    LAND_CHANCE = 0
-    
+   
     for i in range(24):
         for j in range(24):
             if newwavefunction.map[i][j] == 0:
+                FLOWER_CHANCE = 0
+                ROCK_CHANCE = 0
+                WATER_CHANCE = 0
+                COAST_CHANCE = 0
+                LAND_CHANCE = 0
+    
                 neighbors = []
                 if i + 1 < 24:
                     if newwavefunction.map[i + 1][j] > 0:
@@ -260,8 +259,9 @@ def getLowestEntropy():
                             LAND_CHANCE += .125
                             
                     
-                currentEntropy = - ( math.log(FLOWER_CHANCE) * FLOWER_CHANCE + math.log(ROCK_CHANCE) * ROCK_CHANCE + math.log(COAST_CHANCE) * COAST_CHANCE + math.log(LAND_CHANCE) * LAND_CHANCE)            
+                    currentEntropy = - ( math.log(FLOWER_CHANCE) * FLOWER_CHANCE + math.log(ROCK_CHANCE) * ROCK_CHANCE + math.log(COAST_CHANCE) * COAST_CHANCE + math.log(LAND_CHANCE) * LAND_CHANCE)            
 
+                #Flower land impossible
                 elif numpy.array_equiv(possibleTiles, [False, True, True, True, False]):
                     ROCK_CHANCE = .2
                     COAST_CHANCE = .1
@@ -274,7 +274,7 @@ def getLowestEntropy():
 
                     currentEntropy = - ( math.log(ROCK_CHANCE) * ROCK_CHANCE  + math.log(COAST_CHANCE) * COAST_CHANCE + math.log(WATER_CHANCE) * WATER_CHANCE) 
 
-                else:
+                else: #Used to find missing scenarios during testing. Shouldn't occur anymore
                     print("Error: Scenario unaccounted for")
                     print(newwavefunction.mapBool[i][j])            
                 
@@ -294,16 +294,12 @@ def getLowestEntropy():
         
     return RETURNED_FLOWER_CHANCE, RETURNED_ROCK_CHANCE, RETURNED_WATER_CHANCE, RETURNED_COAST_CHANCE, RETURNED_LAND_CHANCE, lowestEntropyX, lowestEntropyY 
 
-#new choose tile will be VERY simple. Probably just needs to pass in location and then the chances from lowestEntropy
 def chooseTile(xIndex, yIndex, RETURNED_FLOWER_CHANCE, RETURNED_ROCK_CHANCE, RETURNED_WATER_CHANCE, RETURNED_COAST_CHANCE, RETURNED_LAND_CHANCE):
-    #takes in these params (location and weightage for each tile) and uses method below to randomly pick from list of tiles
     tileList = [1, 2, 3, 4, 5]
-    print("hmmm")
     
     choice = random.choices(tileList, weights = (RETURNED_LAND_CHANCE, RETURNED_COAST_CHANCE, RETURNED_WATER_CHANCE, RETURNED_ROCK_CHANCE, RETURNED_FLOWER_CHANCE))
     choice = choice[0]
 
-    print(choice)
     if choice == 1:
         land(xIndex, yIndex)
     elif choice == 2:
