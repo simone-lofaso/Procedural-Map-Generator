@@ -51,7 +51,6 @@ img.show
 #time.sleep(2)
 while True:
     FLOWER_CHANCE, ROCK_CHANCE, WATER_CHANCE, COAST_CHANCE, LAND_CHANCE, xIndex, yIndex = tiles.getLowestEntropy()
-    print(xIndex, yIndex)
     tiles.chooseTile(xIndex, yIndex, FLOWER_CHANCE, ROCK_CHANCE, WATER_CHANCE, COAST_CHANCE, LAND_CHANCE)
     img.show
     #time.sleep(.1)
