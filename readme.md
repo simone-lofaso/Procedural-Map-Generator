@@ -1,5 +1,5 @@
 ### Description
-Wavefunction Collapse Map is a simple, pseudo-random map generator, created using Python with NumPy and Pillow. Its purpose is to create a 2D map made up of tiles, done on a 24 x 24 grid, which is rendered using Pillow.
+Procedural Map Generator is a simple, pseudo-random map generator, created using Python with NumPy and Pillow. Its purpose is to create a 2D map made up of tiles on a 24 x 24 grid, which is rendered using Pillow. It generates a unique map each time it is run using the wavefunction collapse algorithm.
 
 ### How to Run
 Run wavefunction.py and navigate to output.png to see the generated image.
